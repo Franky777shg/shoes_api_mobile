@@ -1,6 +1,7 @@
 // setup router from express
 const router = require('express').Router()
 const { body } = require('express-validator')
+const { verifyToken } = require('../helpers/jwt')
 
 // import controller
 const { userController } = require('../controllers')
@@ -29,5 +30,6 @@ const registerValidation = [
 // create router
 router.post('/register', registerValidation, userController.register)
 router.post('/login', userController.login)
+router.post('/keeplogin', verifyToken, userController.keepLogin)
 
 module.exports = router
