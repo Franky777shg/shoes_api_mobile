@@ -6,6 +6,17 @@ const db = require('../database')
 const { createToken, verifyToken } = require('../helpers/jwt')
 
 module.exports = {
+    getUser: async (req, res) => {
+        const query = `SELECT * from users`
+        try {
+            const result = await asyncQuery(query)
+            res.status(200).send(result)
+        }
+        catch (err) {
+            console.log(err)
+            res.status(400).send(err)
+        }
+    },
     register: async (req, res) => {
         const { username, email, password } = req.body
         try {
@@ -32,6 +43,10 @@ module.exports = {
             const getUser = `SELECT * FROM users WHERE id_users = ${resRegister.insertId}`
             const resultGetUser = await asyncQuery(getUser)
 
+            const token = createToken({ id_users: resultGetUser[0].id_users, username: resultGetUser[0].username })
+
+            resultGetUser[0].token = token
+
             res.status(200).send(resultGetUser[0])
         }
         catch (err) {
@@ -50,7 +65,7 @@ module.exports = {
 
             if (result.length === 0) return res.status(400).send('Username or Password is doesn\'t match')
 
-            const token = createToken({ id_users: result[0].id_users, username: result[0].username})
+            const token = createToken({ id_users: result[0].id_users, username: result[0].username })
 
             result[0].token = token
 
