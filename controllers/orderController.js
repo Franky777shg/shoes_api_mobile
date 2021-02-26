@@ -12,7 +12,7 @@ module.exports = {
             const check = await asyncQuery(checkOrder)
             
             if(check.length === 0) {
-                let new_order_number = check.length !== 0 ? check[0].order_number : order_number
+                let new_order_number = check.length !== 0 ? check[0].order_number : Date.now()
 
                 // insert into table orders
                 const addOrders = `INSERT INTO orders (order_number, id_user, status) VALUES
