@@ -6,7 +6,7 @@ module.exports = {
             const getProduct = `select p.*, group_concat(pi.images separator ',') images from product p 
             left join product_img pi
             on p.id = pi.produk_id
-            group by p.nama
+            group by p.id
             order by p.id`
             const result = await asyncQuery(getProduct)
 
